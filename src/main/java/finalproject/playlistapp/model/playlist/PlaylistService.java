@@ -18,23 +18,25 @@ public class PlaylistService {
     private final TrackRepository trackRepository;
     private final UserRepository userRepository;
 
-    public List<Playlist> getPlaylists(Long user_id) {
-        return playlistRepository.findAllByUserId(user_id);
+    public List<Playlist> getPlaylists(Long userId) {
+        return playlistRepository.findAllByUserId(userId);
     }
 
-    public void postPlaylist(Playlist playlist, Long user_id) {
+    public void postPlaylist(Playlist playlist, Long userId) {
         if(playlistRepository.findByName(playlist.getName()).isPresent()) {
             throw new IllegalStateException("A playlist with this name already exists");
         }
-        playlist.setUser(userRepository.findById(user_id).orElseThrow(() -> new IllegalStateException("User does not exist")));
+        playlist.setUser(userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User does not exist")));
         playlistRepository.save(playlist);
     }
 
-    public void deletePlaylist(long id) {
-        if(!playlistRepository.existsById(id)) {
+    @Transactional
+    public void deletePlaylist(Long playlistId) {
+        if(!playlistRepository.existsById(playlistId)) {
             throw new IllegalStateException("Playlist does not exist in the database");
         }
-        playlistRepository.deleteById(id);
+        System.out.println("what the fuck");
+        playlistRepository.deleteById(playlistId);
     }
 
     @Transactional

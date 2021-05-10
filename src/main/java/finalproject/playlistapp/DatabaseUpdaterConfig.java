@@ -29,30 +29,11 @@ public class DatabaseUpdaterConfig {
     @Bean
     CommandLineRunner trackCommandLineRunner() {
         return args -> {
-            addTracks();
             addDefaultUsers();
+            addTracks();
             addDefaultPlaylists();
             addTracksToPlaylists();
         };
-    }
-
-    void addTracks() {
-        File folder = new File("src/main/resources/musicfiles");
-        File[] listOfFiles = folder.listFiles();
-
-        assert listOfFiles != null;
-        for (File file: listOfFiles) {
-            if(file.isFile()) {
-                String[] fileinfo = file.getName().split(" - ");
-                Track track = Track.builder()
-                        .artist(fileinfo[0])
-                        .title(fileinfo[1].replaceFirst("[.][^.]+$", ""))
-                        .path(file.getPath())
-                        .build();
-                trackRepository.save(track);
-            }
-
-        }
     }
 
     void addDefaultUsers() {
@@ -78,6 +59,29 @@ public class DatabaseUpdaterConfig {
                 .build();
 
         userRepository.saveAll(List.of(adminUser, userUser));
+    }
+
+    void addTracks() {
+        File folder = new File("src/main/resources/musicfiles");
+        File[] listOfFiles = folder.listFiles();
+
+        assert listOfFiles != null;
+        for (File file: listOfFiles) {
+            try {
+                if(file.isFile()) {
+                    String[] fileinfo = file.getName().split(" - ");
+                    Track track = Track.builder()
+                            .artist(fileinfo[0])
+                            .title(fileinfo[1].replaceFirst("[.][^.]+$", ""))
+                            .path(file.getPath())
+                            .build();
+                    trackRepository.save(track);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     void addDefaultPlaylists() {
@@ -106,4 +110,5 @@ public class DatabaseUpdaterConfig {
         rock.getTracks().add(track7);
         playlistRepository.saveAll(List.of(metal, rock));
     }
+
 }
