@@ -34,11 +34,8 @@ public class User implements UserDetails {
     private String password;
     private String imageUrl;
     @Enumerated(EnumType.STRING)
-    @JsonIgnore
     private UserRole userRole;
-    @JsonIgnore
     private boolean locked = false;
-    @JsonIgnore
     private boolean enabled = false;
 
     @JsonIgnore
