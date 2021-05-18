@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -48,10 +47,17 @@ public class PlaylistService {
     }
 
     @Transactional
+    public void addTrack(Playlist playlist, Long trackId) {
+        Playlist oldPlaylist = playlistRepository.findById(playlist.getId()).orElseThrow(() -> new IllegalStateException("Playlist does not exist"));
+        Track trackToBeAdded = trackRepository.findById(trackId).orElseThrow(() -> new IllegalStateException("Track does not exist"));
+        oldPlaylist.getTracks().add(trackToBeAdded);
+    }
+
+    @Transactional
     public void removeTrack(Playlist playlist, Long trackId) {
         Playlist oldPlaylist = playlistRepository.findById(playlist.getId()).orElseThrow(() -> new IllegalStateException("Playlist does not exist"));
-        Track track = trackRepository.findById(trackId).orElseThrow(() -> new IllegalStateException("Track does not exist in playlist"));
-        oldPlaylist.getTracks().remove(track);
+        Track trackToBeRemoved = trackRepository.findById(trackId).orElseThrow(() -> new IllegalStateException("Track does not exist in playlist"));
+        oldPlaylist.getTracks().remove(trackToBeRemoved);
     }
 
 }

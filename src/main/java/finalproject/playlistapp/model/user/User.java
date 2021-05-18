@@ -35,8 +35,8 @@ public class User implements UserDetails {
     private String imageUrl;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private boolean locked = false;
     private boolean enabled = false;
+    private boolean locked = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

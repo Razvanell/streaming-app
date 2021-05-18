@@ -37,9 +37,14 @@ public class PlaylistController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping(path = "add-track-to-playlist/{trackId}")
+    public ResponseEntity<?> addTrack(@RequestBody Playlist playlist, @PathVariable Long trackId) {
+        playlistService.addTrack(playlist, trackId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PutMapping(path = "remove-track/{trackId}")
     public ResponseEntity<?> removeTrack(@RequestBody Playlist playlist, @PathVariable Long trackId) {
-        System.out.println(" asd" + playlist.getId() + " ");
         playlistService.removeTrack(playlist, trackId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

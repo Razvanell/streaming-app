@@ -5,7 +5,9 @@ import finalproject.playlistapp.model.user.UserRole;
 import finalproject.playlistapp.model.user.UserService;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationToken;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationTokenService;
+import finalproject.playlistapp.security.util.ServerResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,14 @@ public class RegistrationService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public void register(RegistrationRequest request) {
+    public ServerResponse register(RegistrationRequest request) {
         if (!emailValidator.test(request.getEmail())) {
-            throw new IllegalStateException("Email not valid");
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Invalid Email");
+        }
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            System.out.println("passwords misstach");
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Passwords do not match");
         }
         userService.postUser(User.builder()
                 .firstName(request.getFirstName())
@@ -34,6 +41,7 @@ public class RegistrationService {
                 .imageUrl(request.getImageUrl())
                 .userRole(UserRole.USER)
                 .build());
+        return new ServerResponse(HttpStatus.OK.value(), "User created", request);
     }
 
     @Transactional

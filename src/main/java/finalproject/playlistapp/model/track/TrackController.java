@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "api/track")
@@ -21,8 +23,12 @@ public class TrackController {
     private final TrackService trackService;
 
     @GetMapping(path = "/five")
-    public ResponseEntity<List<Track>> getFiveTracks() {
-        List<Track> tracks = trackService.getFiveTracks();
+    public ResponseEntity<Set<Track>> getFiveTracks() {
+//        List<Track> tracks = trackService.getFiveTracks();
+        Set<Track> tracks = new LinkedHashSet<>();
+        while(tracks.size() < 5) {
+            tracks.add(trackService.randomTrack());
+        }
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 
@@ -47,13 +53,6 @@ public class TrackController {
         headers.set("Content-Length", String.valueOf(file.length()));
         return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
-
-    @PutMapping(path = "add-track-to-playlist/{playlistId}")
-    public ResponseEntity<?> removeTrack(@RequestBody Track track, @PathVariable Long playlistId) {
-        trackService.addTrackToPlaylist(track, playlistId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 
 
 }

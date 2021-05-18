@@ -1,5 +1,6 @@
 package finalproject.playlistapp.model.user.registration;
 
+import finalproject.playlistapp.security.util.ServerResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,8 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public ResponseEntity<RegistrationRequest> register(@RequestBody RegistrationRequest request) {
-        registrationService.register(request);
-        return new ResponseEntity<>(request, HttpStatus.CREATED);
+    public ServerResponse register(@RequestBody RegistrationRequest request) {
+        return registrationService.register(request);
     }
 
     @GetMapping(path = "confirm")
