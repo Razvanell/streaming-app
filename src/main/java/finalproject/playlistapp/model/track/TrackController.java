@@ -1,5 +1,6 @@
 package finalproject.playlistapp.model.track;
 
+import finalproject.playlistapp.security.util.ServerResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -22,14 +23,13 @@ public class TrackController {
 
     private final TrackService trackService;
 
-    @GetMapping(path = "/five")
-    public ResponseEntity<Set<Track>> getFiveTracks() {
-//        List<Track> tracks = trackService.getFiveTracks();
+    @GetMapping(path = "/random")
+    public ResponseEntity<Set<Track>> getFiveRandomTracks() {
         Set<Track> tracks = new LinkedHashSet<>();
         while(tracks.size() < 5) {
             tracks.add(trackService.randomTrack());
         }
-        return new ResponseEntity<>(tracks, HttpStatus.OK);
+        return new ResponseEntity<Set<Track>>(tracks, HttpStatus.OK);
     }
 
     @GetMapping(path = "/all")

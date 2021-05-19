@@ -65,15 +65,8 @@ public class UserService implements UserDetailsService {
         return token;
     }
 
-    public void enableUser(String email) {
-        userRepository.enableUser(email);
-    }
-
     public void deleteUser(String email) {
-        Long id = userRepository.findByEmail(email).get().getId();
-        if(!userRepository.existsById(id)) {
-            throw new IllegalStateException("No user with email: " + email + " exists in the database");
-        }
+        Long id = userRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("No user with email: " + email + " exists in the database")).getId();
         userRepository.deleteById(id);
     }
 

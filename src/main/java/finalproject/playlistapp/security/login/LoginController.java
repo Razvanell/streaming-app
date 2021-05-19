@@ -31,7 +31,7 @@ public class LoginController {
 
             // Preparing object for client
             LoginResponse loginResponseModel = new LoginResponse(jwtTokenUtil.generateAccessToken(user), user);
-            return new ServerResponse(HttpStatus.OK.value(), "Bun venit " + user.getFirstName(), loginResponseModel);
+            return new ServerResponse(HttpStatus.OK.value(), "Welcome" + user.getFirstName(), loginResponseModel);
 
         } catch (BadCredentialsException ex) {
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());

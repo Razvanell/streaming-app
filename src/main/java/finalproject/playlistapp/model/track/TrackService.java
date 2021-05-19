@@ -24,14 +24,13 @@ public class TrackService {
     }
 
     public Track randomTrack() {
-        Long qty = trackRepository.count();
+        long qty = trackRepository.count();
         int idx = (int)(Math.random() * qty);
         Page<Track> questionPage = trackRepository.findAll(PageRequest.of(idx, 1));
-        Track track = null;
+
         if (questionPage.hasContent()) {
-            track = questionPage.getContent().get(0);
-        }
-        return track;
+            return questionPage.getContent().get(0);
+        } else return null;
     }
 
     public Optional<Track> playTrackById(Long id) {

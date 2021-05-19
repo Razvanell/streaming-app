@@ -2,8 +2,6 @@ package finalproject.playlistapp.model.user.registration;
 
 import finalproject.playlistapp.security.util.ServerResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +17,7 @@ public class RegistrationController {
     }
 
     @GetMapping(path = "confirm")
-    public void confirm(@RequestParam("token") String token) {
-        registrationService.confirmToken(token);
+    public ServerResponse confirm(@RequestParam("token") String token) {
+        return registrationService.confirmToken(token);
     }
 }

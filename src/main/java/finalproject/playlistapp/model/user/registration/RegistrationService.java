@@ -1,6 +1,7 @@
 package finalproject.playlistapp.model.user.registration;
 
 import finalproject.playlistapp.model.user.User;
+import finalproject.playlistapp.model.user.UserRepository;
 import finalproject.playlistapp.model.user.UserRole;
 import finalproject.playlistapp.model.user.UserService;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationToken;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
+    private final UserRepository userRepository;
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -30,7 +32,7 @@ public class RegistrationService {
         }
 
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            System.out.println("passwords misstach");
+            System.out.println("passwords mismatch");
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Passwords do not match");
         }
         userService.postUser(User.builder()
@@ -45,19 +47,20 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
+    public ServerResponse confirmToken(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).get();
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("Email already confirmed");
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Email already confirmed");
         }
 
         if (confirmationToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("Token expired");
+            return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Token expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);
-        userService.enableUser(confirmationToken.getUser().getEmail());
+        userRepository.enableUser(confirmationToken.getUser().getEmail());
+        return new ServerResponse(HttpStatus.OK.value(), "Token confirmed", null);
     }
 
 
