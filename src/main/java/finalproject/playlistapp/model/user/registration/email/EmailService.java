@@ -1,4 +1,4 @@
-package finalproject.playlistapp.model.user.registration.email.sender;
+package finalproject.playlistapp.model.user.registration.email;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 @Service
-public class EmailService implements EmailSender{
+public class EmailService implements EmailSender {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 

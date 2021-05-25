@@ -1,4 +1,4 @@
-package finalproject.playlistapp.model.user.registration;
+package finalproject.playlistapp.model.user.registration.email;
 
 import org.springframework.stereotype.Service;
 

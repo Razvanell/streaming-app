@@ -3,6 +3,7 @@ package finalproject.playlistapp.model.user.registration;
 import finalproject.playlistapp.model.user.User;
 import finalproject.playlistapp.model.user.UserRole;
 import finalproject.playlistapp.model.user.UserService;
+import finalproject.playlistapp.model.user.registration.email.EmailValidator;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationToken;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationTokenService;
 import finalproject.playlistapp.security.util.ServerResponse;

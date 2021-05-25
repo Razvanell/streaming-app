@@ -1,7 +1,7 @@
 package finalproject.playlistapp.model.user;
 
-import finalproject.playlistapp.model.user.registration.EmailBuilder;
-import finalproject.playlistapp.model.user.registration.email.sender.EmailSender;
+import finalproject.playlistapp.model.user.registration.email.EmailBuilder;
+import finalproject.playlistapp.model.user.registration.email.EmailSender;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationToken;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;

@@ -4,6 +4,7 @@ import finalproject.playlistapp.model.user.User;
 import finalproject.playlistapp.model.user.UserRepository;
 import finalproject.playlistapp.model.user.UserRole;
 import finalproject.playlistapp.model.user.UserService;
+import finalproject.playlistapp.model.user.registration.email.EmailValidator;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationToken;
 import finalproject.playlistapp.model.user.registration.token.ConfirmationTokenService;
 import finalproject.playlistapp.security.util.ServerResponse;
@@ -28,6 +29,7 @@ public class RegistrationService {
 
     public ServerResponse register(RegistrationRequest request) {
         if (!emailValidator.test(request.getEmail())) {
+            System.out.println("wtf e un server response?????");
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Invalid Email");
         }
 
@@ -35,6 +37,7 @@ public class RegistrationService {
             System.out.println("passwords mismatch");
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Passwords do not match");
         }
+
         userService.postUser(User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
