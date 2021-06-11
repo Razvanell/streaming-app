@@ -29,7 +29,7 @@ public class RegistrationService {
 
     public ServerResponse register(RegistrationRequest request) {
         if (!emailValidator.test(request.getEmail())) {
-            System.out.println("wtf e un server response?????");
+            System.out.println("invalid email");
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), "Invalid Email");
         }
 

@@ -30,10 +30,11 @@ public class LoginController {
             User user = (User) authenticate.getPrincipal();
 
             // Preparing object for client
-            LoginResponse loginResponseModel = new LoginResponse(jwtTokenUtil.generateAccessToken(user), user);
-            return new ServerResponse(HttpStatus.OK.value(), "Welcome" + user.getFirstName(), loginResponseModel);
+            LoginResponse loginResponse = new LoginResponse(jwtTokenUtil.generateAccessToken(user), user);
+            return new ServerResponse(HttpStatus.OK.value(), "Welcome " + user.getFirstName(), loginResponse);
 
         } catch (BadCredentialsException ex) {
+            System.out.println("Bad credentials");
             return new ServerResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         }
     }
